@@ -1,3 +1,6 @@
+// NOTE: These are codes that are returned by Yahoo for rainy types of weather
+var RAIN = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 35, 37, 38, 39, 40, 45, 47];
+
 $(document).ready(function() {
   if ( "geolocation" in navigator ) {
     /* geolocation is available */
@@ -10,9 +13,13 @@ $(document).ready(function() {
   $('.city-search').on('submit', function(e) {
     e.preventDefault();
 
-    var self = $(this);
+    var self = $(this),
+        input = self.find('input');
 
-    getWeather({ city: self.find('input').val() });
+    getWeather({ city: input.val() });
+
+    // Clear out the input when we're done!
+    input.val('');
   });
 });
 
@@ -23,6 +30,16 @@ function getWeather(location) {
     success: function(weather) {
       /* We got the weather for the given location */
       console.log(weather);
+      $('.weather-city-region').html(weather.city + ', ' + weather.country);
+      $('.weather-currently').html(weather.currently);
+      $('.weather-icon').html( $('<img>').attr('src', weather.image).attr('alt', weather.currently) );
+
+      if ( RAIN.find(function(code) { return parseInt(code, 10) === weather.code }) ) {
+        $('.weather-recommendation').html('Luckily you\'ve been saving your money for a day like today!');
+      } else {
+        $('.weather-recommendation').html('Time to put some money away for a rainy day!');
+      }
+
       drawMap(location);
     }
   });
