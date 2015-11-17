@@ -1,0 +1,27 @@
+html {
+  font-family: "Montserrat", sans-serif;
+  font-size: 125%;
+  line-height: 1.35;
+}
+
+.site-header {
+  height: 40px;
+  color: cadetblue;
+  background-color: azure;
+  text-align: center;
+  border-bottom: 1px solid rgba(0,139,139,0.25);
+}
+
+.site-header > h1 {
+  display: inline-block;
+  margin: 0 0 0 -1.35rem;
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
+.site-header > img {
+  display: inline-block;
+  height: 3rem;
+  margin-top: -0.8rem;
+  vertical-align: middle;
+}
