@@ -6,6 +6,14 @@ $(document).ready(function() {
       getWeatherByPosition(position);
     });
   }
+
+  $('.city-search').on('submit', function(e) {
+    e.preventDefault();
+
+    var self = $(this);
+
+    getWeatherByCityName( self.find('input').val() );
+  });
 });
 
 function getWeatherByPosition(position) {
