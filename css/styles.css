@@ -88,9 +88,11 @@ button {
 .intro {
   position: absolute;
   top: 50%;
-  margin: 0 1rem;
+  left: 50%;
+  width: 90%;
+  max-width: 600px;
   text-align: center;
-  transform: translateY(-50%);
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .intro > h1 {

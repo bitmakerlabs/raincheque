@@ -3,7 +3,7 @@ $(document).ready(function() {
     /* geolocation is available */
     navigator.geolocation.getCurrentPosition(function(position) {
       /* We now have the user's position as lat and log */
-      getWeatherByPosition(position);
+      getWeather(position);
     });
   }
 
@@ -12,52 +12,58 @@ $(document).ready(function() {
 
     var self = $(this);
 
-    getWeatherByCityName( self.find('input').val() );
+    getWeather({ city: self.find('input').val() });
   });
 });
 
-function getWeatherByPosition(position) {
-  $.getJSON('http://api.openweathermap.org/data/2.5/weather', {
-    lat: position.coords.latitude,
-    lon: position.coords.longitude,
-    appid: Raincheque.openWeatherMap.appId
-  })
-  .done(function(data) {
-    /* We got the weather for the given location */
-    console.log(data);
-
-    drawMap(position);
+function getWeather(location) {
+  $.simpleWeather({
+    location: location.coords ? location.coords.latitude + ',' + location.coords.longitude : location.city,
+    unit: 'c',
+    success: function(weather) {
+      /* We got the weather for the given location */
+      console.log(weather);
+      drawMap(location);
+    }
   });
 }
 
-function getWeatherByCityName(city) {
-  $.getJSON('http://api.openweathermap.org/data/2.5/weather', {
-    q: city,
-    appid: Raincheque.openWeatherMap.appId
-  })
-  .done(function(data) {
-    /* We got the weather for the given location */
-    console.log(data);
+function drawMap(location) {
+  if ( !Raincheque.map ) {
+    var coords = { lat: location.coords.latitude || 43.7, lng: location.coords.longitude || 79.4 };
 
-    drawMap({
-      coords: {
-        latitude: data.coord.lat,
-        longitude: data.coord.lon
+    Raincheque.map = new google.maps.Map(document.getElementById('map'), {
+      center: coords,
+      zoom: 12,
+      draggable: false,
+      disableDoubleClickZoom: true,
+      scaleControl: false,
+      scrollwheel: false,
+      mapTypeControl: false,
+      streetViewControl: false,
+      zoomControl: false
+    });
+
+    var marker = new google.maps.Marker({
+        map: Raincheque.map,
+        position: coords
+    });
+  }
+
+  if ( Raincheque.map && location.city ) {
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode( { 'address': location.city }, function(results, status) {
+      if ( status === google.maps.GeocoderStatus.OK ) {
+        Raincheque.map.setCenter(results[0].geometry.location);
+
+        var marker = new google.maps.Marker({
+            map: Raincheque.map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
       }
     });
-  });
-}
-
-function drawMap(position) {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: position.coords.latitude, lng: position.coords.longitude },
-    zoom: 12,
-    draggable: false,
-    disableDoubleClickZoom: true,
-    scaleControl: false,
-    scrollwheel: false,
-    mapTypeControl: false,
-    streetViewControl: false,
-    zoomControl: false
-  });
+  }
 }
