@@ -114,6 +114,17 @@ button {
   font-weight: 400;
 }
 
+.weather-map {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.2s ease-out;
+}
+
+.weather-map.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 .city-search {
   position: absolute;
   width: 100%;
@@ -152,6 +163,12 @@ button {
   padding: 3rem 2rem;
   background-color: rgba(192, 192, 255, 0.35);
   text-align: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-in 0.1s;
+}
+
+.weather.is-visible {
+  opacity: 1;
 }
 
 .weather-icon {
@@ -164,4 +181,16 @@ button {
   margin-top: -0.5rem;
   background-color: rgba(95, 158, 160, 0.5);
   padding: 1rem 0.5rem;
+}
+
+@media screen and (min-width: 55rem) {
+  #map,
+  .weather {
+    width: 50%;
+  }
+
+  .weather {
+    left: 50%;
+    background-color: white;
+  }
 }

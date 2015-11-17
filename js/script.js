@@ -10,6 +10,11 @@ $(document).ready(function() {
     });
   }
 
+  $('#get-started').on('click', function(e) {
+    e.preventDefault();
+    $('.weather-map, .weather').addClass('is-visible');
+  })
+
   $('.city-search').on('submit', function(e) {
     e.preventDefault();
 
@@ -34,7 +39,7 @@ function getWeather(location) {
       $('.weather-currently').html(weather.currently);
       $('.weather-icon').html( $('<img>').attr('src', weather.image).attr('alt', weather.currently) );
 
-      if ( RAIN.find(function(code) { return parseInt(code, 10) === weather.code }) ) {
+      if ( RAIN.find(function(code) { return code === parseInt(weather.code, 10) }) ) {
         $('.weather-recommendation').html('Luckily you\'ve been saving your money for a day like today!');
       } else {
         $('.weather-recommendation').html('Time to put some money away for a rainy day!');
