@@ -51,7 +51,7 @@ function getWeatherByCityName(city) {
 function drawMap(position) {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: position.coords.latitude, lng: position.coords.longitude },
-    zoom: 13,
+    zoom: 12,
     draggable: false,
     disableDoubleClickZoom: true,
     scaleControl: false,
